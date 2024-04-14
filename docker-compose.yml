@@ -7,7 +7,7 @@ services:
         image: 'redis:alpine'
 
     mariadb:
-        image: 'mariadb:11.0'
+        image: 'mysql:latest'
         working_dir: /var/www
         volumes:
             - '.:/var/www'
