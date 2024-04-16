@@ -7,4 +7,3 @@ RUN apt-get update \
         php8.3-redis \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
-RUN ["php", "artisan", "migrate"]
