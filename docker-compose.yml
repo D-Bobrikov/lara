@@ -17,22 +17,6 @@ services:
             - internet
             - appnet
 
-    php-fpm:
-        build: phpdocker/php-fpm
-        working_dir: /var/www
-        restart: unless-stopped
-        volumes:
-            - '.:/var/www'
-            - './phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/8.3/fpm/conf.d/99-overrides.ini'
-        networks:
-            - appnet
-
-    redis:
-        image: 'redis:latest'
-        restart: unless-stopped
-        networks:
-            - appnet
-
     mysql:
         image: 'mysql:latest'
         working_dir: /var/www
@@ -47,6 +31,25 @@ services:
             - MYSQL_PASSWORD=36gucoj1
         ports:
             - '3306:3306'
+        networks:
+            - appnet
+
+    php-fpm:
+        build: phpdocker/php-fpm
+        working_dir: /var/www
+        restart: unless-stopped
+        volumes:
+            - '.:/var/www'
+            - './phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/8.3/fpm/conf.d/99-overrides.ini'
+        depends_on:
+            - mysql
+
+        networks:
+            - appnet
+
+    redis:
+        image: 'redis:latest'
+        restart: unless-stopped
         networks:
             - appnet
 
