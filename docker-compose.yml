@@ -5,7 +5,7 @@ services:
         working_dir: /var/www
         restart: unless-stopped
         volumes:
-            - '/etc/letsencrypt/live:/var/www'
+            - '/etc/letsencrypt/:/var/www'
             - '.:/var/www'
             - './phpdocker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf'
         ports:
