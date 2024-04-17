@@ -7,7 +7,6 @@ services:
         volumes:
             - '.:/var/www'
             - './phpdocker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf'
-            - '/etc/letsencrypt/live/hostbeaver.ru/:/var/www/certbot'
         ports:
             - '80:80'
             - '443:443'
