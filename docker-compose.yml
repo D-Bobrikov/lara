@@ -6,7 +6,7 @@ services:
         restart: unless-stopped
         volumes:
             - '.:/var/www'
-            - '/etc/letsencrypt/live/hostbeaver.ru: /var/www/certbot'
+            - '/etc/letsencrypt/archive/hostbeaver.ru: /var/www/certbot'
             - './phpdocker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf'
         ports:
             - '80:80'
