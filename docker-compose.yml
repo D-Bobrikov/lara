@@ -3,6 +3,12 @@ services:
         image: 'nginx:latest'
         working_dir: /var/www
         restart: unless-stopped
+        container_name: memos
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.memos.rule=Host(`hostbeaver.ru`)"
+            - "traefik.http.services.memos.loadbalancer.server.port=80"
+
         volumes:
             - '.:/var/www'
             - './phpdocker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf'
