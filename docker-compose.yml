@@ -21,6 +21,11 @@ services:
         image: 'mysql:latest'
         working_dir: /var/www
         restart: unless-stopped
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.memos.rule=Host(`hostbeaver.ru`)"
+            - "traefik.http.services.memos.loadbalancer.server.port=3306"
+
         volumes:
             - '.:/var/www'
             - '/home/admin/db/lara/mysql/:/var/lib/mysql'
@@ -34,6 +39,11 @@ services:
         build: phpdocker/php-fpm
         working_dir: /var/www
         restart: unless-stopped
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.memos.rule=Host(`hostbeaver.ru`)"
+            - "traefik.http.services.memos.loadbalancer.server.port=9000"
+
         volumes:
             - '.:/var/www'
             - './phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/8.3/fpm/conf.d/99-overrides.ini'
@@ -42,6 +52,11 @@ services:
 
     redis:
         image: 'redis:latest'
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.memos.rule=Host(`hostbeaver.ru`)"
+            - "traefik.http.services.memos.loadbalancer.server.port=6379"
+
         restart: unless-stopped
 
 networks:
