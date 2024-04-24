@@ -15,7 +15,7 @@ services:
             - redis
             - mysql
         networks:
-            - proxynet
+            - internet
             - appnet
 
     mysql:
@@ -56,7 +56,7 @@ services:
 
 networks:
     internet:
-        name: proxynet
+        name: internet
         driver: bridge
     appnet:
         name: appnet
