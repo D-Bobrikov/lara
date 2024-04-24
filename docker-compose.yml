@@ -14,9 +14,6 @@ services:
             - php-fpm
             - redis
             - mysql
-        networks:
-            - proxynet
-            - appnet
 
     mysql:
         image: 'mysql:latest'
@@ -32,8 +29,6 @@ services:
             - MYSQL_PASSWORD=36gucoj1
         ports:
             - '3306:3306'
-        networks:
-            - appnet
 
     php-fpm:
         build: phpdocker/php-fpm
@@ -45,20 +40,12 @@ services:
         depends_on:
             - mysql
 
-        networks:
-            - appnet
-
     redis:
         image: 'redis:latest'
         restart: unless-stopped
-        networks:
-            - appnet
 
 networks:
-    internet:
+    default:
         name: proxynet
-        driver: bridge
-    appnet:
-        name: appnet
-        driver: bridge
+        external: true
 
