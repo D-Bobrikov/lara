@@ -9,8 +9,8 @@ services:
             - './phpdocker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf'
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.memos.rule=Host(`hostbeaver.ru`)"
-            - "traefik.http.services.memos.loadbalancer.server.port=80"
+            - "traefik.http.routers.nginx.rule=Host(`hostbeaver.ru`)"
+            - "traefik.http.routers.nginx.entrypoints=http"
         depends_on:
             - php-fpm
             - redis
