@@ -15,8 +15,6 @@ services:
             - php-fpm
             - redis
             - mysql
-        networks:
-            - proxynet
 
     mysql:
         image: 'mysql:latest'
@@ -49,3 +47,9 @@ services:
         restart: unless-stopped
         labels:
             - traefik.enable=false
+
+
+networks:
+  default:
+    name: proxynet
+    external: true
