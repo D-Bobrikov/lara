@@ -3,29 +3,26 @@ services:
         image: 'nginx:latest'
         working_dir: /var/www
         restart: unless-stopped
-        container_name: memos
+        volumes:
+            - '/etc/letsencrypt/:/etc/letsencrypt/'
+            - '.:/var/www'
+            - './phpdocker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf'
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.memos.rule=Host(`hostbeaver.ru`)"
-            - "traefik.http.services.memos.loadbalancer.server.port=80"
-
-        volumes:
-            - '.:/var/www'
-            - './phpdocker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf'
+            - "traefik.http.services.memos.loadbalancer.server.port=443"
         depends_on:
             - php-fpm
             - redis
             - mysql
+        networks:
+            - proxynet
+            - appnet
 
     mysql:
         image: 'mysql:latest'
         working_dir: /var/www
         restart: unless-stopped
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.routers.memos.rule=Host(`hostbeaver.ru`)"
-            - "traefik.http.services.memos.loadbalancer.server.port=3306"
-
         volumes:
             - '.:/var/www'
             - '/home/admin/db/lara/mysql/:/var/lib/mysql'
@@ -34,33 +31,33 @@ services:
             - MYSQL_DATABASE=lara
             - MYSQL_USER=admin
             - MYSQL_PASSWORD=36gucoj1
+        networks:
+            - appnet
 
     php-fpm:
         build: phpdocker/php-fpm
         working_dir: /var/www
         restart: unless-stopped
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.routers.memos.rule=Host(`hostbeaver.ru`)"
-            - "traefik.http.services.memos.loadbalancer.server.port=9000"
-
         volumes:
             - '.:/var/www'
             - './phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/8.3/fpm/conf.d/99-overrides.ini'
         depends_on:
             - mysql
 
+        networks:
+            - appnet
+
     redis:
         image: 'redis:latest'
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.routers.memos.rule=Host(`hostbeaver.ru`)"
-            - "traefik.http.services.memos.loadbalancer.server.port=6379"
-
         restart: unless-stopped
+        networks:
+            - appnet
+
 
 networks:
-    default:
-        name: proxynet
-        external: true
-
+  default:
+    name: proxynet
+    external: true
+  appnet:
+      name: appnet
+      driver: bridge
