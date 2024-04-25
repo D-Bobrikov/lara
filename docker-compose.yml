@@ -17,7 +17,6 @@ services:
             - mysql
         networks:
             - proxynet
-            - appnet
 
     mysql:
         image: 'mysql:latest'
@@ -31,8 +30,6 @@ services:
             - MYSQL_DATABASE=lara
             - MYSQL_USER=admin
             - MYSQL_PASSWORD=36gucoj1
-        networks:
-            - appnet
 
     php-fpm:
         build: phpdocker/php-fpm
@@ -44,20 +41,12 @@ services:
         depends_on:
             - mysql
 
-        networks:
-            - appnet
-
     redis:
         image: 'redis:latest'
         restart: unless-stopped
-        networks:
-            - appnet
 
 
 networks:
   default:
     name: proxynet
     external: true
-  appnet:
-      name: appnet
-      driver: bridge
